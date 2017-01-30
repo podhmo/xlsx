@@ -197,6 +197,7 @@ type xlsxCols struct {
 type xlsxCol struct {
 	Collapsed    bool    `xml:"collapsed,attr"`
 	Hidden       bool    `xml:"hidden,attr"`
+	BestFit      bool    `xml:"bestFit,attr,omitempty"`
 	Max          int     `xml:"max,attr"`
 	Min          int     `xml:"min,attr"`
 	Style        int     `xml:"style,attr"`

@@ -527,6 +527,7 @@ func readRowsFromSheet(Worksheet *xlsxWorksheet, file *File, sheet *Sheet) ([]*R
 					Max:          rawcol.Max,
 					Hidden:       rawcol.Hidden,
 					Width:        rawcol.Width,
+					BestFit:      rawcol.BestFit,
 					OutlineLevel: rawcol.OutlineLevel}
 				cols[i-1] = col
 				if file.styles != nil {

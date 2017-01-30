@@ -4,6 +4,7 @@ package xlsx
 const ColWidth = 9.5
 
 type Col struct {
+	BestFit      bool
 	Min          int
 	Max          int
 	Hidden       bool

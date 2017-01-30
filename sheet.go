@@ -112,6 +112,24 @@ func (s *Sheet) SetColWidth(startcol, endcol int, width float64) error {
 	return nil
 }
 
+//Set the width of a single column or multiple columns (via bestFit option).
+func (s *Sheet) SetStretchWidthByBestFit(startcol, endcol int) error {
+	if startcol > endcol {
+		return fmt.Errorf("Could not set width for range %d-%d", startcol, endcol)
+	}
+	col := &Col{
+		style:   NewStyle(),
+		Min:     startcol + 1,
+		Max:     endcol + 1,
+		BestFit: true,
+	}
+	s.Cols = append(s.Cols, col)
+	if endcol+1 > s.MaxCol {
+		s.MaxCol = endcol + 1
+	}
+	return nil
+}
+
 // When merging cells, the cell may be the 'original' or the 'covered'.
 // First, figure out which cells are merge starting points. Then create
 // the necessary cells underlying the merge area.
@@ -221,7 +239,9 @@ func (s *Sheet) makeXLSXSheet(refTable *RefTable, styles *xlsxStyleSheet) *xlsxW
 			customWidth = 1
 		}
 		worksheet.Cols.Col = append(worksheet.Cols.Col,
-			xlsxCol{Min: col.Min,
+			xlsxCol{
+				BestFit:      col.BestFit,
+				Min:          col.Min,
 				Max:          col.Max,
 				Hidden:       col.Hidden,
 				Width:        col.Width,
@@ -230,7 +250,6 @@ func (s *Sheet) makeXLSXSheet(refTable *RefTable, styles *xlsxStyleSheet) *xlsxW
 				OutlineLevel: col.OutlineLevel,
 				Style:        XfId,
 			})
-
 		if col.OutlineLevel > maxLevelCol {
 			maxLevelCol = col.OutlineLevel
 		}
